@@ -1,51 +1,41 @@
-<div class="navbar bg-base-100">
-    <div class="navbar-start">
-      <!-- <div class="dropdown">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-        </div>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li><a>Homepage</a></li>
-          <li><a>Portfolio</a></li>
-          <li><a>About</a></li>
-        </ul>
-      </div> -->
-    </div>
-    <div class="navbar-center">
-      <a class="block"><img class="h-[150px]" src="/sdonahue-logo.png" alt=""></a>
-    </div>
-    <div class="navbar-end">
-      <!-- <button class="btn btn-ghost btn-circle">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-      </button>
-      <button class="btn btn-ghost btn-circle">
-        <div class="indicator">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-          <span class="badge badge-xs badge-primary indicator-item"></span>
-        </div>
-      </button> -->
-    </div>
-  </div>
-  <div class="carousel carousel-center rounded-none">
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg" alt="Pizza" />
-    </div> 
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg" alt="Pizza" />
-    </div> 
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.jpg" alt="Pizza" />
-    </div> 
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1494253109108-2e30c049369b.jpg" alt="Pizza" />
-    </div> 
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.jpg" alt="Pizza" />
-    </div> 
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1559181567-c3190ca9959b.jpg" alt="Pizza" />
-    </div> 
-    <div class="carousel-item">
-      <img src="https://daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.jpg" alt="Pizza" />
-    </div>
-  </div>
+<script>
+	import { Slidy } from '@slidy/svelte';
+	import '@slidy/svelte/dist/slidy.css';
+</script>
+
+<div class="navbar bg-base-100 h-[20svh]">
+	<div class="navbar-start"></div>
+	<div class="navbar-center">
+		<a class="block"><img class="h-[150px]" src="/sdonahue-logo.png" alt="" /></a>
+	</div>
+	<div class="navbar-end"></div>
+</div>
+<div class="flex flex-col justify-center items-center h-[80svh]">
+	<Slidy
+		slides={[
+			{ thumbnail: '/yard1.jpeg' },
+			{ thumbnail: '/yard2.jpeg' },
+			{ thumbnail: '/yard3.jpeg' }
+		]}
+		getImgSrc={(item) => item.thumbnail}
+		arrows
+		loop
+		counter
+		background
+		snap={'center'}
+		--slidy-slide-height={'60svh'}
+		--slidy-slide-width={'100%'}
+	/>
+	<button class="btn btn-outline btn-primary mb-8">Learn More</button>
+</div>
+<div class="flex h-[100svh]"></div>
+
+<style>
+	:global(.slidy-slide.bg) {
+		background-position: bottom !important;
+	}
+	:global(.slidy-slides) {
+		--slidy-slide-gap: 10px !important;
+		padding: 0 5px;
+	}
+</style>
