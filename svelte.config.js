@@ -12,7 +12,6 @@ const config = {
 		alias: {
 		  '$src/*': 'src/*'
 		},
-		
 	},
 	preprocess: vitePreprocess(),
 };
