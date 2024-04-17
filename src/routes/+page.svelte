@@ -3,7 +3,7 @@
 	import '@slidy/svelte/dist/slidy.css';
 	import Contact from '../lib/Contact.svelte';
 	const Plugins = import('@slidy/plugins');
-	
+
 	const scrollIntoView = ({ target }) => {
 		const el = document.querySelector(target.dataset.scroll);
 		if (!el) return;
@@ -37,7 +37,9 @@
 	<div class="flex flex-col justify-start items-center h-[70%]">
 		<div class="h-full w-full">
 			{#await Plugins}
-				LOading...
+				<div class="flex w-full h-full justify-center items-center">
+					<span class="loading loading-ring w-14"></span>
+				</div>
 			{:then Plugins}
 				<Slidy
 					slides={[
@@ -53,7 +55,7 @@
 					plugins={[Plugins.autoplay({ autoplay: true, duration: 3000 })]}
 					snap={'center'}
 					--slidy-slide-width={'100%'}
-					--slidy-slide-gap={'0'}
+					--slidy-slide-gap={'5px'}
 					--slidy-slide-height={'100%'}
 					--slidy-slide-radius={'none'}
 				/>
@@ -61,7 +63,7 @@
 		</div>
 	</div>
 	<div class="h-[10%] flex items-center justify-center">
-		<button data-scroll="#section-2" class="btn btn-outline btn-primary" on:click={scrollIntoView}>
+		<button data-scroll="#section-2" class="btn btn-secondary" on:click={scrollIntoView}>
 			Learn More</button
 		>
 	</div>
@@ -80,7 +82,7 @@
 	</div>
 </div>
 <Contact />
-<div id="section-2" class="flex h-[100svh]">
+<!-- <div id="section-2" class="flex h-[100svh]">
 	<div class="hero min-h-screen bg-base-200">
 		<div class="hero-content flex-col lg:flex-row">
 			<img
@@ -106,7 +108,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <style>
 	:global(.slidy-slide.bg) {

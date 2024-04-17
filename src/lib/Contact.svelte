@@ -2,11 +2,10 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-        
-        const btn = document.getElementById('button');
-        
+		const btn = document.getElementById('button');
+
 		document.getElementById('form').addEventListener('submit', function (event) {
-            emailjs.init('user_sfHHqVix3VlKerTBKwc66');
+			emailjs.init('user_sfHHqVix3VlKerTBKwc66');
 			event.preventDefault();
 
 			btn.value = 'Sending...';
@@ -35,25 +34,38 @@
 	></script>
 </head>
 
-<div class="contact">
-	<form id="form">
-		<div class="field">
-			<label for="from_name">from_name</label>
-			<input type="text" name="from_name" id="from_name" />
-		</div>
-		<div class="field">
-			<label for="from_phone">from_phone</label>
-			<input type="text" name="from_phone" id="from_phone" />
-		</div>
-		<div class="field">
-			<label for="from_email">from_email</label>
-			<input type="text" name="from_email" id="from_email" />
-		</div>
-		<div class="field">
-			<label for="message">message</label>
-			<input type="text" name="message" id="message" />
-		</div>
-
-		<input type="submit" id="button" value="Send Email" />
+<div class="contact flex w-full items-center justify-center py-14 flex-col">
+    <h1 class="text-6xl w-full px-6 mb-8 text-center leading-[4rem] font-bold">
+        Send us a message for more info, Someone will contact you asap!
+    </h1>
+	<form id="form" class="flex flex-col gap-4 w-1/2 bg-primary/80 p-4 rounded-lg">
+		<input
+			type="text"
+			name="from_name"
+			id="from_name"
+			placeholder="Name"
+			class="input input-bordered input-primary w-full max-w-md"
+		/>
+		<input
+			type="text"
+			name="from_phone"
+			id="from_phone"
+			placeholder="Phone"
+			class="input input-bordered input-primary w-full max-w-md"
+		/>
+		<input
+			type="text"
+			name="from_email"
+			id="from_email"
+			placeholder="Email"
+			class="input input-bordered input-primary w-full max-w-md"
+		/>
+		<textarea
+			name="message"
+			id="message"
+			placeholder="Message"
+			class="textarea textarea-bordered textarea-lg w-full max-w-md"
+		></textarea>
+		<input type="submit" id="button" value="Send Email" class="btn btn-secondary" />
 	</form>
 </div>
