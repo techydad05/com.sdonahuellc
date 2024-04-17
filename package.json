@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@slidy/plugins": "^1.2.0",
 		"@slidy/svelte": "^3.4.4"
 	}
 }
