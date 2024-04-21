@@ -35,10 +35,10 @@
 </head>
 
 <div class="contact flex w-full items-center justify-center py-14 flex-col">
-    <h1 class="text-6xl w-full px-6 mb-8 text-primary-content text-center leading-[4rem] font-bold">
+    <h1 class="text-5xl w-full px-6 mb-8 text-neutral-100 text-center leading-[4rem] font-bold drop-shadow">
         Send us a message for more info, Someone will contact you asap!
     </h1>
-	<form id="form" class="flex flex-col gap-4 w-3/4 md:w-1/2 bg-primary/80 p-4 rounded-lg">
+	<form id="form" class="flex flex-col items-center justify-center gap-4 w-3/4 md:w-1/2 bg-primary/80 p-4 rounded-lg shadow">
 		<input
 			type="text"
 			name="from_name"
@@ -66,6 +66,6 @@
 			placeholder="Message"
 			class="textarea textarea-bordered textarea-lg w-full max-w-md"
 		></textarea>
-		<input type="submit" id="button" value="Send Email" class="btn btn-secondary" />
+		<input type="submit" id="button" value="Send Email" class="btn btn-secondary btn-lg" />
 	</form>
 </div>
