@@ -37,7 +37,7 @@
 
 <svelte:window on:scroll={() => getScrollPercent()} />
 
-<div class="h-screen">
+<div class="h-[100svh]">
 	<div class="navbar bg-base-100 h-[20%]">
 		<div class="navbar-start"></div>
 		<div class="navbar-center h-full">
