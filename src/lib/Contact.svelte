@@ -1,28 +1,34 @@
 <script>
 	import { onMount } from 'svelte';
+	import { bounceIn, sineInOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
+	let alert = false;
 
 	onMount(() => {
 		const btn = document.getElementById('button');
-
 		document.getElementById('form').addEventListener('submit', function (event) {
-			emailjs.init('user_sfHHqVix3VlKerTBKwc66');
-			event.preventDefault();
+			alert = true;
+			setTimeout(() => {
+				alert = false;
+			}, 3000);
+		// 	emailjs.init('user_sfHHqVix3VlKerTBKwc66');
+		// 	event.preventDefault();
 
-			btn.value = 'Sending...';
+		// 	btn.value = 'Sending...';
 
-			const serviceID = 'sdonahue';
-			const templateID = 'template_8tfe3th';
+		// 	const serviceID = 'sdonahue';
+		// 	const templateID = 'template_8tfe3th';
 
-			emailjs.sendForm(serviceID, templateID, this).then(
-				() => {
-					btn.value = 'Send Email';
-					alert('Sent!');
-				},
-				(err) => {
-					btn.value = 'Send Email';
-					alert(JSON.stringify(err));
-				}
-			);
+		// 	emailjs.sendForm(serviceID, templateID, this).then(
+		// 		() => {
+		// 			btn.value = 'Send Email';
+		// 			alert('Sent!');
+		// 		},
+		// 		(err) => {
+		// 			btn.value = 'Send Email';
+		// 			alert(JSON.stringify(err));
+		// 		}
+		// 	);
 		});
 	});
 </script>
@@ -35,10 +41,15 @@
 </head>
 
 <div id="contact" class="contact flex w-full items-center justify-center py-14 flex-col">
-    <h1 class="text-5xl w-full px-6 mb-8 text-neutral-100 text-center leading-[4rem] font-bold drop-shadow">
-        Send us a message for more info, Someone will contact you asap!
-    </h1>
-	<form id="form" class="flex flex-col items-center justify-center gap-4 w-3/4 md:w-1/2 bg-primary/80 p-4 rounded-lg shadow">
+	<h1
+		class="text-5xl w-full px-6 mb-8 text-neutral-100 text-center leading-[4rem] font-bold drop-shadow"
+	>
+		Send us a message for more info, Someone will contact you asap!
+	</h1>
+	<form
+		id="form"
+		class="flex flex-col items-center justify-center gap-4 w-3/4 md:w-1/2 bg-primary/80 p-4 rounded-lg shadow"
+	>
 		<input
 			type="text"
 			name="from_name"
@@ -69,3 +80,20 @@
 		<input type="submit" id="button" value="Send Email" class="btn btn-secondary btn-lg" />
 	</form>
 </div>
+{#if alert}
+	<div role="alert" class="alert alert-success fixed bottom-4 right-4 w-96" transition:fly={{x: -250 ,delay: 500, easing: sineInOut}}>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="stroke-current shrink-0 h-6 w-6"
+			fill="none"
+			viewBox="0 0 24 24"
+			><path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+			/></svg
+		>
+		<span>Your message has been sent!</span>
+	</div>
+{/if}
