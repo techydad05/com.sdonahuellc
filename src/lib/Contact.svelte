@@ -34,7 +34,7 @@
 	></script>
 </head>
 
-<div class="contact flex w-full items-center justify-center py-14 flex-col">
+<div id="contact" class="contact flex w-full items-center justify-center py-14 flex-col">
     <h1 class="text-5xl w-full px-6 mb-8 text-neutral-100 text-center leading-[4rem] font-bold drop-shadow">
         Send us a message for more info, Someone will contact you asap!
     </h1>

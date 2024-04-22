@@ -2,9 +2,8 @@
 	import { Slidy } from '@slidy/svelte';
 	import '@slidy/svelte/dist/slidy.css';
 	import Contact from '../lib/Contact.svelte';
-	import { flip } from 'svelte/animate';
-	import { fly, slide } from 'svelte/transition';
-	import { bounceIn, bounceOut, linear } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
+	import { cubicInOut } from 'svelte/easing';
 	const Plugins = import('@slidy/plugins');
 
 	const scrollIntoView = ({ target }) => {
@@ -56,41 +55,36 @@
 				<Slidy
 					{slides}
 					getImgSrc={(item) => item.thumbnail}
-					arrows
 					loop
-					counter
 					on:index={(e) => {
 						slidyItem = slides[e.detail.index];
 					}}
 					plugins={[Plugins.autoplay({ autoplay: true, duration: 3000 })]}
 					snap={'center'}
+					easing={cubicInOut}
+					counter={false}
+					arrows={false}
 					let:item
 					--slidy-slide-width={'100%'}
 					--slidy-slide-gap={'5px'}
 					--slidy-slide-height={'100%'}
 					--slidy-slide-radius={'none'}
 				></Slidy>
-				<div class="absolute top-[35%] w-full h-auto py-4 flex items-center justify-center overflow-hidden">
-					<!-- {#key slidyItem.title} -->
+				<div class="absolute top-[35%] w-full h-auto py-4 flex flex-col gap-4 items-center justify-center overflow-hidden">
 					{#each slidyItem.title.split(' ') as word, index}
 						{#key word}
-						<!-- {index % 2 === 0 ? 'from-left' : 'from-right'} -->
-							<div class="text-8xl text-neutral-100" in:fly={{ x: (index % 2 === 0 ? "-250px" : "250px"), duration: 1000, delay: 250 }}>
+							<div style="text-shadow: 2px 2px 10px black;" class="text-7xl text-neutral-100" in:fly={{ x: (index % 2 === 0 ? "-250px" : "250px"), duration: 1000, delay: 250 }}>
 								&nbsp;{word}
 							</div>
 						{/key}
 					{/each}
-					<!-- <div class="text-3xl" in:slide>
-							{slidyItem.title}
-						</div> -->
-					<!-- {/key} -->
 				</div>
 			{/await}
 		</div>
 	</div>
 	<div class="h-[10%] flex items-center justify-center">
-		<button data-scroll="#section-2" class="btn btn-secondary" on:click={scrollIntoView}>
-			Learn More</button
+		<button data-scroll="#contact" class="btn btn-secondary" on:click={scrollIntoView}>
+			Contact Us</button
 		>
 	</div>
 </div>
@@ -102,7 +96,7 @@
 		<div class="hero-overlay bg-opacity-60"></div>
 		<div class="hero-content text-center text-neutral-content">
 			<div class="max-w-md">
-				<h1 class="mb-5 text-5xl font-bold z-50 text-neutral-100">FOCUS ON QUALITY</h1>
+				<h1 class="mb-5 text-5xl font-bold z-50 text-neutral-100">WE FOCUS ON QUALITY</h1>
 			</div>
 		</div>
 	</div>
@@ -112,6 +106,7 @@
 	<aside>
 		<img src="/logo-letters.png" alt="" class="w-12" />
 		<p class="font-bold">S.Donahue LLC</p>
+		<a href="tel:7273312812">727-331-2812</a>
 		<p>Copyright © 2024 - All right reserved</p>
 	</aside>
 	<nav>
@@ -181,6 +176,6 @@
 	}
 	:global(autoplay-button) {
 		/* z-index: 20 !important; */
-		/* display: none; */
+		display: none;
 	}
 </style>
