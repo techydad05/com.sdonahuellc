@@ -1,34 +1,33 @@
 <script>
 	import { onMount } from 'svelte';
-	import { bounceIn, sineInOut } from 'svelte/easing';
+	import { sineInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	let alert = false;
 
 	onMount(() => {
 		const btn = document.getElementById('button');
 		document.getElementById('form').addEventListener('submit', function (event) {
-			alert = true;
-			setTimeout(() => {
-				alert = false;
-			}, 3000);
-		// 	emailjs.init('user_sfHHqVix3VlKerTBKwc66');
-		// 	event.preventDefault();
+			emailjs.init('user_sfHHqVix3VlKerTBKwc66');
+			event.preventDefault();
 
-		// 	btn.value = 'Sending...';
+			btn.value = 'Sending...';
 
-		// 	const serviceID = 'sdonahue';
-		// 	const templateID = 'template_8tfe3th';
+			const serviceID = 'sdonahue';
+			const templateID = 'template_8tfe3th';
 
-		// 	emailjs.sendForm(serviceID, templateID, this).then(
-		// 		() => {
-		// 			btn.value = 'Send Email';
-		// 			alert('Sent!');
-		// 		},
-		// 		(err) => {
-		// 			btn.value = 'Send Email';
-		// 			alert(JSON.stringify(err));
-		// 		}
-		// 	);
+			emailjs.sendForm(serviceID, templateID, this).then(
+				() => {
+					btn.value = 'Send Email';
+					alert = true;
+					setTimeout(() => {
+						alert = false;
+					}, 3000);
+				},
+				(err) => {
+					btn.value = 'Send Email';
+					alert(JSON.stringify(err));
+				}
+			);
 		});
 	});
 </script>
@@ -81,7 +80,11 @@
 	</form>
 </div>
 {#if alert}
-	<div role="alert" class="alert alert-success fixed bottom-4 right-4 w-96" transition:fly={{x: -250 ,delay: 500, easing: sineInOut}}>
+	<div
+		role="alert"
+		class="alert alert-success fixed top-4 right-4 w-96"
+		transition:fly={{ x: -250, delay: 500, easing: sineInOut }}
+	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			class="stroke-current shrink-0 h-6 w-6"
