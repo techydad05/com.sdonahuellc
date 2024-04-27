@@ -2,88 +2,220 @@
 	import { onMount } from 'svelte';
 	import { sineInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
+	import { form, field } from 'svelte-forms';
+	import { email, required, min } from 'svelte-forms/validators';
+	import MaskInput from 'svelte-input-mask/MaskInput.svelte';
+
+	const googleRecaptchaSiteKey = '6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45';
+
+	const name = field('name', '', [required()]);
+	const phone = field('phone', '', []);
+	const mail = field('email', '', [required(), email()]);
+	const message = field('message', '', [required(), min(20)]);
+	const myForm = form(name, phone, mail, message);
+	let btnText = 'Send Email';
 	let alert = false;
 
-	onMount(() => {
-		const btn = document.getElementById('button');
-		document.getElementById('form').addEventListener('submit', function (event) {
-			emailjs.init('user_sfHHqVix3VlKerTBKwc66');
-			event.preventDefault();
+	const submitForm = () => {
+		console.log(myForm.summary());
+		emailjs.init('user_sfHHqVix3VlKerTBKwc66');
 
-			btn.value = 'Sending...';
+		btnText = 'Sending...';
 
-			const serviceID = 'sdonahue';
-			const templateID = 'template_8tfe3th';
+		const serviceID = 'sdonahue';
+		const templateID = 'template_8tfe3th';
 
-			emailjs.sendForm(serviceID, templateID, this).then(
-				() => {
-					btn.value = 'Send Email';
-					alert = true;
-					setTimeout(() => {
-						alert = false;
-					}, 3000);
-				},
-				(err) => {
-					btn.value = 'Send Email';
-					alert(JSON.stringify(err));
-				}
-			);
-		});
-	});
+		// Get Google ReCaptcha Score
+		// let captchaToken = grecaptcha.getResponse();
+		// var params = {
+		// 	name: '#contact-form',
+		// 	'g-recaptcha-response': captchaToken
+		// };
+		// console.log(params);
+		// grecaptcha.execute("6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45");
+
+		// emailjs.sendForm(serviceID, templateID, "#contact-form").then(
+		// 	() => {
+		// 		btnText = 'Send Email';
+		// 		alert = true;
+		// 		myForm.reset();
+		// 		setTimeout(() => {
+		// 			alert = false;
+		// 		}, 3000);
+		// 	},
+		// 	(err) => {
+		// 		btnText = 'Send Email';
+		// 		console.log(JSON.stringify(err));
+		// 	}
+		// );
+	};
+	const captchaReady = () => {
+		console.log("Captcha is ready!");
+	};
+	const captchaCallback = () => {
+		console.log("Captcha is ready!");
+	};
+	// const onsubmit = (e) => {
+	// 	console.log('testies', e);
+	// };
+	// onMount(() => {
+	// 	// grecaptcha.ready(function () {
+	// 	// 	grecaptcha.render('container', {
+	// 	// 		sitekey: '6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45'
+	// 	// 	});
+	// 	// });
+	// });
 </script>
 
 <head>
-	<script
-		type="text/javascript"
-		src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
-	></script>
+	<script async defer src="https://www.google.com/recaptcha/api.js?render=6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45"></script>
 </head>
-
 <div id="contact" class="contact flex w-full items-center justify-center py-14 flex-col">
+	<!-- <div
+		class="g-recaptcha"
+		data-sitekey="6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45"
+		data-callback={captchaCallback}
+		data-size="invisible"
+		data-onload={captchaReady}	
+	></div> -->
 	<h1
 		class="text-5xl w-full px-6 mb-8 text-neutral-100 text-center leading-[4rem] font-bold drop-shadow"
 	>
-		Send us a message for more info, Someone will contact you asap!
+		Send us a message for more info, Someone will contact you shortly!
 	</h1>
 	<form
+		id="contact-form"
+		class="flex flex-col items-center justify-center gap-4 w-3/4 md:w-1/2 bg-primary/80 p-4 rounded-lg shadow"
+	>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Name:</span>
+			</div>
+			<input
+				type="text"
+				bind:value={$name.value}
+				name="name"
+				id="name"
+				class="input input-bordered input-primary w-full max-w-md"
+			/>
+		</label>
+		{#if $myForm.hasError('name.required')}
+			<div>Name is required</div>
+		{/if}
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Phone:</span>
+			</div>
+			<MaskInput
+				bind:value={$phone.value}
+				name="from_phone"
+				id="from_phone"
+				class="input input-bordered input-primary w-full max-w-md"
+				maskChar={'0'}
+				mask="000-000-0000"
+			/>
+		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Email:</span>
+			</div>
+			<input
+				type="text"
+				bind:value={$mail.value}
+				name="from_email"
+				id="from_email"
+				class="input input-bordered input-primary w-full max-w-md"
+			/>
+		</label>
+		{#if $myForm.hasError('email.required')}
+			<div>Email is required</div>
+		{/if}
+		{#if $myForm.hasError('email')}
+			<div>A valid email is required</div>
+		{/if}
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Message:</span>
+			</div>
+			<textarea
+				bind:value={$message.value}
+				name="message"
+				id="message"
+				class="textarea textarea-bordered textarea-lg w-full max-w-md"
+			></textarea>
+		</label>
+		{#if $myForm.hasError('message.required')}
+			<div>Message is required</div>
+		{/if}
+		{#if $myForm.hasError('message.min')}
+			<div>Message is too short! 20 character minimum</div>
+		{/if}
+		<button class="btn btn-primary" on:click={() => grecaptcha?.execute("6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45").then(e => console.log("e:", e))}>test</button>
+		<button
+			disabled={!$myForm.valid | ($mail.value === '')}
+			on:click|preventDefault={() => submitForm()}
+			class="btn btn-secondary btn-lg">{btnText}</button
+		>
+	</form>
+	<!-- <form
 		id="form"
 		class="flex flex-col items-center justify-center gap-4 w-3/4 md:w-1/2 bg-primary/80 p-4 rounded-lg shadow"
 	>
-		<input
-			type="text"
-			name="from_name"
-			id="from_name"
-			placeholder="Name"
-			class="input input-bordered input-primary w-full max-w-md"
-		/>
-		<input
-			type="text"
-			name="from_phone"
-			id="from_phone"
-			placeholder="Phone"
-			class="input input-bordered input-primary w-full max-w-md"
-		/>
-		<input
-			type="text"
-			name="from_email"
-			id="from_email"
-			placeholder="Email"
-			class="input input-bordered input-primary w-full max-w-md"
-		/>
-		<textarea
-			name="message"
-			id="message"
-			placeholder="Message"
-			class="textarea textarea-bordered textarea-lg w-full max-w-md"
-		></textarea>
-		<input type="submit" id="button" value="Send Email" class="btn btn-secondary btn-lg" />
-	</form>
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Name:</span>
+			</div>
+			<input
+				type="text"
+				name="from_name"
+				id="from_name"
+				class="input input-bordered input-primary w-full max-w-md"
+			/>
+		</label>
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Phone:</span>
+			</div>
+			<MaskInput
+				name="from_phone"
+				id="from_phone"
+				class="input input-bordered input-primary w-full max-w-md"
+				maskChar={'0'}
+				mask="000-000-0000"
+			/>
+		</label>
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Email:</span>
+			</div>
+			<input
+				type="text"
+				name="from_email"
+				id="from_email"
+				class="input input-bordered input-primary w-full max-w-md"
+			/>
+		</label>
+		<label class="form-control w-full max-w-md">
+			<div class="label">
+				<span class="label-text text-2xl">Message:</span>
+			</div>
+			<textarea
+				name="message"
+				id="message"
+				class="textarea textarea-bordered textarea-lg w-full max-w-md"
+			></textarea>
+		</label>
+		<input type="submit" id="form-btn" value="Send Email" class="btn btn-secondary btn-lg" />
+	</form> -->
 </div>
 {#if alert}
 	<div
 		role="alert"
 		class="alert alert-success fixed top-4 right-4 w-96"
-		transition:fly={{ x: -250, delay: 500, easing: sineInOut }}
+		transition:fly={{ x: -250, easing: sineInOut }}
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
