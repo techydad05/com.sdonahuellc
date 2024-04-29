@@ -16,10 +16,9 @@
 	let btnText = 'Send Email';
 	let alert = false;
 
-	const submitForm = () => {
+	const submitForm = async () => {
 		console.log(myForm.summary());
 		emailjs.init('user_sfHHqVix3VlKerTBKwc66');
-		grecaptcha.execute();
 
 		btnText = 'Sending...';
 
@@ -27,27 +26,28 @@
 		const templateID = 'template_8tfe3th';
 
 		// Get Google ReCaptcha Score
-		// let captchaToken = grecaptcha.getResponse();
+		let captchaToken = await window.grecaptcha.getResponse();
 		// var params = {
 		// 	name: '#contact-form',
 		// 	'g-recaptcha-response': captchaToken
 		// };
 		// console.log(params);
-
-		// emailjs.sendForm(serviceID, templateID, "#contact-form").then(
-		// 	() => {
-		// 		btnText = 'Send Email';
-		// 		alert = true;
-		// 		myForm.reset();
-		// 		setTimeout(() => {
-		// 			alert = false;
-		// 		}, 3000);
-		// 	},
-		// 	(err) => {
-		// 		btnText = 'Send Email';
-		// 		console.log(JSON.stringify(err));
-		// 	}
-		// );
+		if (captchaToken != '') {
+			emailjs.sendForm(serviceID, templateID, '#contact-form').then(
+				() => {
+					btnText = 'Send Email';
+					alert = true;
+					myForm.reset();
+					setTimeout(() => {
+						alert = false;
+					}, 3000);
+				},
+				(err) => {
+					btnText = 'Send Email';
+					console.log(JSON.stringify(err));
+				}
+			);
+		}
 	};
 	// const onSubmit = async (e) => {
 	// 	grecaptcha.execute().then(async (e) => {
@@ -61,11 +61,6 @@
 	// 		});
 	// 	});
 	// };
-	let token = "";
-	const testies = async () => {
-		token = await window.grecaptcha.getResponse();
-		console.log(token)
-	}
 </script>
 
 <head>
@@ -152,23 +147,12 @@
 			<div>Message is too short! 20 character minimum</div>
 		{/if}
 		<Captcha />
-		<input on:click={testies} type="submit" value="Submit" />
-		{token}
-		<!-- <button on:click|preventDefault={onSubmit}>Submit</button> -->
-		<!-- <button class="btn btn-primary" on:click|preventDefault={submitForm}>test</button> -->
-		<!-- <button
-			disabled={!$myForm.valid | ($mail.value === '')})
+		<!-- <input on:click={testies} type="submit" value="Submit" /> -->
+		<button
+			disabled={!$myForm.valid | ($mail.value === '')}
 			on:click|preventDefault={() => submitForm()}
 			class="btn btn-secondary btn-lg">{btnText}</button
-		> -->
-
-		<!-- <button
-			data-sitekey="6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45"
-			data-callback="captchaCallback"
-			data-onload="captchaReady"
-			on:click|preventDefault={() => submitForm()}
-			class="g-recaptcha btn btn-secondary btn-lg">{btnText}</button
-		> -->
+		>
 	</form>
 	<!-- <form
 		id="form"
