@@ -1,12 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { sineInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import { form, field } from 'svelte-forms';
 	import { email, required, min } from 'svelte-forms/validators';
 	import MaskInput from 'svelte-input-mask/MaskInput.svelte';
-
-	const googleRecaptchaSiteKey = '6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45';
+	import Captcha from './captcha.svelte';
 
 	const name = field('name', '', [required()]);
 	const phone = field('phone', '', []);
@@ -19,6 +19,7 @@
 	const submitForm = () => {
 		console.log(myForm.summary());
 		emailjs.init('user_sfHHqVix3VlKerTBKwc66');
+		grecaptcha.execute();
 
 		btnText = 'Sending...';
 
@@ -32,7 +33,6 @@
 		// 	'g-recaptcha-response': captchaToken
 		// };
 		// console.log(params);
-		// grecaptcha.execute("6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45");
 
 		// emailjs.sendForm(serviceID, templateID, "#contact-form").then(
 		// 	() => {
@@ -49,35 +49,33 @@
 		// 	}
 		// );
 	};
-	const captchaReady = () => {
-		console.log("Captcha is ready!");
-	};
-	const captchaCallback = () => {
-		console.log("Captcha is ready!");
-	};
-	// const onsubmit = (e) => {
-	// 	console.log('testies', e);
+	// const onSubmit = async (e) => {
+	// 	grecaptcha.execute().then(async (e) => {
+	// 		console.log(await e);
+	// 		const res = await fetch('/captcha', {
+	// 			method: 'POST',
+	// 			body: JSON.stringify({ captchaResponse: e }),
+	// 			headers: {
+	// 				'Content-Type': 'application/json'
+	// 			}
+	// 		});
+	// 	});
 	// };
-	// onMount(() => {
-	// 	// grecaptcha.ready(function () {
-	// 	// 	grecaptcha.render('container', {
-	// 	// 		sitekey: '6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45'
-	// 	// 	});
-	// 	// });
-	// });
+	let token = "";
+	const testies = async () => {
+		token = await window.grecaptcha.getResponse();
+		console.log(token)
+	}
 </script>
 
 <head>
-	<script async defer src="https://www.google.com/recaptcha/api.js?render=6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45"></script>
+	<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+	<script
+		type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+	></script>
 </head>
 <div id="contact" class="contact flex w-full items-center justify-center py-14 flex-col">
-	<!-- <div
-		class="g-recaptcha"
-		data-sitekey="6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45"
-		data-callback={captchaCallback}
-		data-size="invisible"
-		data-onload={captchaReady}	
-	></div> -->
 	<h1
 		class="text-5xl w-full px-6 mb-8 text-neutral-100 text-center leading-[4rem] font-bold drop-shadow"
 	>
@@ -153,12 +151,24 @@
 		{#if $myForm.hasError('message.min')}
 			<div>Message is too short! 20 character minimum</div>
 		{/if}
-		<button class="btn btn-primary" on:click={() => grecaptcha?.execute("6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45").then(e => console.log("e:", e))}>test</button>
-		<button
-			disabled={!$myForm.valid | ($mail.value === '')}
+		<Captcha />
+		<input on:click={testies} type="submit" value="Submit" />
+		{token}
+		<!-- <button on:click|preventDefault={onSubmit}>Submit</button> -->
+		<!-- <button class="btn btn-primary" on:click|preventDefault={submitForm}>test</button> -->
+		<!-- <button
+			disabled={!$myForm.valid | ($mail.value === '')})
 			on:click|preventDefault={() => submitForm()}
 			class="btn btn-secondary btn-lg">{btnText}</button
-		>
+		> -->
+
+		<!-- <button
+			data-sitekey="6LdxSsYpAAAAAPody1-gCZNzt9z0bjqyh2ABHI45"
+			data-callback="captchaCallback"
+			data-onload="captchaReady"
+			on:click|preventDefault={() => submitForm()}
+			class="g-recaptcha btn btn-secondary btn-lg">{btnText}</button
+		> -->
 	</form>
 	<!-- <form
 		id="form"

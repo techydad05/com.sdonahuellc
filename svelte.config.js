@@ -13,6 +13,11 @@ const config = {
 		  '$src/*': 'src/*'
 		},
 	},
+	vite: {
+		optimizeDeps: {
+			exclude: ['@mac-barrett']
+		},
+	},
 	preprocess: vitePreprocess(),
 };
 
