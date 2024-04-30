@@ -1,6 +1,4 @@
 <script>
-	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { sineInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import { form, field } from 'svelte-forms';
@@ -32,7 +30,15 @@
 		// 	'g-recaptcha-response': captchaToken
 		// };
 		// console.log(params);
-		if (captchaToken != '') {
+		const res = await fetch('/captcha', {
+			method: 'POST',
+			body: JSON.stringify({ captchaResponse: captchaToken }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		
+		if (res.ok) {
 			emailjs.sendForm(serviceID, templateID, '#contact-form').then(
 				() => {
 					btnText = 'Send Email';

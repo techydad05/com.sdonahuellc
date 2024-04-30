@@ -11,9 +11,9 @@ export async function POST({ request, cookies }) {
         }
     }
     );
-    console.log("captchaResponse:", captchaResponse);
-    console.log("captchaCheck:", await captchaCheck.json());
-    return json({ captchaResponse }, { status: 201 });
+    // console.log("captchaResponse:", captchaResponse);
+    // console.log("captchaCheck:", await captchaCheck.json());
+    return json(captchaCheck);
 }
 
 // /** @type {import('./$types').RequestHandler} */
